@@ -15,8 +15,6 @@ from tinydb import TinyDB, Query
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.conf import settings
-import OpenEXR
-import Imath
 import numpy as np
 from PIL import Image
 import imageio
