@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html style="background: #A0E9E0">
+<head>
+    <title>Comparaison de Configurations</title>
+    {% load static %}
+    <style>           
+        /* Style pour la liste de configurations */
+        .config-list-container {
+            position: fixed;
+            top: 30%;  
+            right: 0;
+            width: 33%;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            border: 1px solid #23D160;
+        }
+        
+        /* Style pour les conteneurs de paire de sélection */
+        .selection-group {
+            display: flex;
+            align-items: center; /* Centre les éléments verticalement */
+        }
+
+        /* Style pour le bouton "X" */
+        .delete-selection {
+            margin-left: 5px; 
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div id="image-lists" style="position: absolute; top: 30%; left:45%;" >
+        <h2 class="title is-4" style="color: green;" >Images Affichées:</h2>
+        <ul class="selected-images-list"></ul>
+        <br>     
+        <h2 class="title is-4" style="color: red;">Images Non Affichées:</h2>
+        <ul class="selected-images-not-displayed-list">
+            {% for imageName in images_not_displayed %}
+                <li title="Dossiers où l'image manque : {% for folder in image_missing_info.imageName %}{{ folder }} / {% endfor %}">
+                    {{ imageName }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <h1 class="has-text-primary-dark" style="left: 50%; top: 10%; position: absolute; font-size: 70px; font-family: Inter; font-weight: 400; word-wrap: break-word; transform: translateX(-50%);">Comparaison</h1>
+    <button class="button" style="position: absolute; top: 20px; left: 20px; width: 150px; height: 40px;" onclick="window.location.replace('../')">
+        <span class="icon-text">
+            <span class="icon">
+              <i class="fas fa-home"></i>
+            </span>
+            <span>Home</span>
+        </span>
+    </button>
+    <h2 class="title is-4 has-text-primary-dark" style="position: absolute; top: 25%; right: 10%; ">Liste des Configurations</h2>
+    <div class="config-list-container">    
+        <div id="config-list">
+            
+            {% for config in configurations %}
+                <h2 class="title is-4">Configuration "{{ config.name }}":</h2>
+                {% for version in config.versions %}
+                    <h3 class="title is-5">Version {{ version.version_id }}:</h3>
+                    <ul>
+                        {% for param in version.parameters %}
+                            <li>  Type : "{{ param.Type }}" ,  Parametre : "{{ param.Parametre }}", Valeur : "{{ param.Valeur }}"</li>
+                        {% endfor %}
+                    </ul>
+                    <br>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        
+    </div>
+
+    </div id="generation-form">     
+        <div id="selections-container" style="margin-top:16%; margin-left: 10px;">
+            <div class="selection-group">
+                <label for="select_config" >Version :</label>
+                <select class="source_select" style="width: 200px; margin-left: 15px;">
+                    <option value="" disabled selected>Choisir</option>
+                    {% for folder in folders %}
+                    <option value="{{ folder }}">{{ folder }}</option>
+                    {% endfor %}
+                </select>
+                <label for="select_config" style="margin-left: 15px">Date :</label>
+                <select class="destination_select" style="margin-left: 15px; width: 200px">
+                    <option value="" disabled selected>Choisir</option>
+                </select>
+                <br>
+                <br>
+            </div>
+        </div>   
+    </div>
+    <button style="margin-left: 10px;" id="add_selection">+</button>
+    <div class="checkbox-group" style="margin-top: 10px; margin-left: 10px; ">
+        <label>Options :</label>
+        <input type="checkbox" name="option" value="l1"> L1
+        <input type="checkbox" style="margin-left: 50px;" name="option" value="l2"> L2
+        <input type="checkbox" style="margin-left: 50px;" name="option" value="mrse"> MRSE
+        <input type="checkbox" style="margin-left: 50px;" name="option" value="mape"> MAPE
+        <input type="checkbox" style="margin-left: 50px;" name="option" value="negpos"> NEGPOS
+    </div>
+    
+    <button class="button is-success is-outlined has-text-primary-dark" id="view-all-images" style="position: absolute; margin-top: 80px; left: 200px; width: 200px; height: 50px;">Comparer</button>
+    <script src="{% static 'js/compar.js' %}"></script>
+</body>
+</html>

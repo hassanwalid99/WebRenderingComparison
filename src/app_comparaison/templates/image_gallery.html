@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Resultat de comparaison</title>
+    <style>
+        .stretch {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0; right: 0; top: 0; bottom: 0;
+        }
+        body {
+            font-family: sans-serif;
+        }
+    </style>
+    <script>
+        window.resourceBaseUrl = '/';
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.1/react-dom.js"></script>
+    <script src="{% static 'jeri/jeri.js' %}"></script>
+</head>
+<body>
+    <div id="root" class="stretch"></div>
+
+    <script>
+        const imageData = {{ image_data|safe }};
+        
+        const data = {
+            title: 'root',
+            children: []
+        };
+    
+        // Créer la structure Jeri
+        for (const imageName in imageData) {
+            const folderData = imageData[imageName];
+            const imageItem = {
+                title: imageName,
+                children: []
+            };
+    
+            for (const folderName in folderData) {
+                const imagePaths = folderData[folderName];
+                const sousDossierItem = {
+                    title: folderName,
+                    children: []
+                };
+                
+                for (const imagePathObj of imagePaths) {
+                    sousDossierItem.children.push({
+                        title: imagePathObj.titre, // Utilisez le titre de l'image ici
+                        image: imagePathObj.chemin // Utilisez le chemin de l'image ici
+                    });
+                }
+    
+                imageItem.children.push(sousDossierItem);
+            }
+    
+            data.children.push(imageItem);
+        }
+    
+        // Affichage
+        Jeri.renderViewer(document.getElementById('root'), data);
+    </script>
+  
+</body>
+</html>

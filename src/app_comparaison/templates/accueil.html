@@ -1,0 +1,16 @@
+{% load static %}
+<html>
+<head>
+    <!-- Inclure le fichier CSS de Bulma.io -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body style="background: #A0E9E0">
+    <h1 style="left: 50%; top: 10%; position: absolute; color: black; font-size: 80px; font-family: Inter; font-weight: 400; word-wrap: break-word; transform: translateX(-50%);">Bienvenue</h1>
+    <button class="button is-warning" style="position: absolute; top:35%; left: 20%; width: 250px; height: 60px;" onclick="window.location.replace('scene')">Gestion des Scènes</button>
+    <button class="button is-danger" style="position: absolute; top: 70%; left: 20%; width: 250px; height: 60px;" onclick="window.location.replace('configuration')">Nouvelle configuration</button>
+    <button class="button is-link" style="position: absolute; top: 35%; right: 20%; width: 250px; height: 60px;" onclick="window.location.replace('generation')" >Génération des rendus</button>
+    <button class="button is-success" style="position: absolute; top: 70%; right: 20%; width: 250px; height: 60px;" onclick="window.location.replace('comparaison')">Comparaison</button>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/gener.js' %}"></script>
+</body>
+</html>

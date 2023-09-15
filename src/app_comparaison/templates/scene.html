@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html style="background: #A0E9E0">
+<head>
+    <title>Vue Scene</title>
+    <style>
+
+        /* Styles pour la liste des dossiers */
+        .folder-list {
+            overflow-y: scroll;
+            max-height: 400px;
+        }
+
+        /* Style pour le bouton X */
+        .delete-button {
+            cursor: pointer;
+            color: red;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .centered-image {
+            max-width: 30%;
+            position: absolute;
+            top: 60%;
+            left: 51%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+</head>
+<body>
+    <button class="button" style="position: absolute; top: 20px; left: 20px; width: 150px; height: 40px;" onclick="window.location.replace('../')">
+        <span class="icon-text">
+            <span class="icon">
+              <i class="fas fa-home"></i>
+            </span>
+            <span>Home</span>
+        </span>
+    </button>
+    <h1 class="has-text-warning-dark" style="left: 50%; top: 10%; position: absolute; font-size: 80px; font-family: Inter; font-weight: 400; word-wrap: break-word; transform: translateX(-50%);">Gestion des scenes</h1>
+    <div id="image-bubble"></div>
+    <div style="float: right; width: 25%;">
+        <h2 style="margin-top: 60%; right: 25px; font-size: 25px ;font-weight: bold;"> Liste des Scenes</h2>
+        <div class="box" >
+            <div class="folder-list" id="folder-list">
+                {% for folder in folders %}
+                    <div class="folder-item" data-folder="{{ folder }}">
+                        <span class="delete-button" data-folder="{{ folder }}">X</span>
+                        {{ folder }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>   
+    </div>
+    <div style="float: left; width: 70%;">
+        <h2  style="margin-top: 20%; margin-left: 15px; font-size: 25px; font-weight: bold;">Nouvelle scene</h2>
+        <div class="box" style="width: 45%; margin-left: 15px;">
+
+            <form method="post" enctype="multipart/form-data" id="uploadForm">
+                {% csrf_token %}
+                <div>
+                    <label for="name_scene">Nom de la scène :</label>
+                    <input type="text" style="margin-left:82px" id="name_scene" name="name_scene">
+                    <br>
+                    <br>
+                    <input type="file" id="zip_file" name="zip_file" accept=".zip" style="display: none;" />
+                    <button  class="button is-dark" type="button" style="height: 28px;" onclick="document.getElementById('zip_file').click();">
+                            <span class="file-icon"><i class="fas fa-upload"></i></span>        
+                            <span class="file-label">Choisir un fichier .zip</span>
+                    </button>
+                    <input type="text" style="margin-left:3px" id="selected_folder" name="selected_folder" readonly>
+                    <br>
+                    <br>
+                    <input type="file" id="image_file" name="image_file" accept=".png,.exr" style="display: none;" />
+                    <button class="button is-dark" type="button" style="height: 28px;" onclick="document.getElementById('image_file').click();">
+                        <span class="file-icon"><i class="fas fa-upload"></i></span>        
+                        <span class="file-label">Choisir une référence</span>
+                    </button>
+                    <input type="text" id="selected_image" name="selected_image" readonly>
+                    <br>
+                    <br>
+                    <button class="button is-warning is-outlined has-text-black" type="button" style="height: 35px;" id="validatefolder">Envoyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="{% static 'js/main.js' %}?v={% now "U" %}" data-static-media-scene="{% static 'media/scene' %}"></script>
+
+</body>
+</html>
